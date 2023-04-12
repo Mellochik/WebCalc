@@ -1,7 +1,6 @@
 import streamlit as st
 import pandas as pd
 import math
-import plotly
 import plotly.graph_objs as go
 
 
