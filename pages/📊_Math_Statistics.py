@@ -1,6 +1,8 @@
 import streamlit as st
 import pandas as pd
 import math
+import plotly
+import plotly.graph_objs as go
 
 
 class Selection:
@@ -101,9 +103,12 @@ class Selection:
         # Мода
         index = self.table['n_i'].index(max(self.table['n_i']))
         alpha = self.table['x_i'][index][0]
-        self.Mo = alpha + self.m * (self.table['n_i'][index] - self.table['n_i'][index - 1]) / \
+        try:
+            self.Mo = alpha + self.m * (self.table['n_i'][index] - self.table['n_i'][index - 1]) / \
                   ((self.table['n_i'][index] - self.table['n_i'][index - 1]) + (
                           self.table['n_i'][index] - self.table['n_i'][index + 1]))
+        except Exception:
+            self.Mo = 0
 
         # Медиана
         index = 0
@@ -112,7 +117,10 @@ class Selection:
                 index = i
                 break
         alpha = self.table['x_i'][index][0]
-        self.Me = alpha + self.m * (length / 2 - self.table['n*_i'][index - 1]) / self.table['n_i'][index]
+        try:
+            self.Me = alpha + self.m * (length / 2 - self.table['n*_i'][index - 1]) / self.table['n_i'][index]
+        except Exception:
+            self.Me = 0
 
         # Куб разности
         self.table['(x-X)^3'] = []
@@ -164,3 +172,8 @@ if data:
             f"Медиана Ме = {selection.Me}\n"
             f"Асимметрия А = {selection.A}\n"
             f"Эксцесс E = {selection.E}")
+
+    fig = go.Figure()
+    fig.add_trace(go.Bar(x=selection.table['x_middle'], y=selection.table['n_i'], name="Гистрограмма"))
+    fig.add_trace(go.Scatter(x=selection.table['x_middle'], y=selection.table['n_i'], name="Полигон"))
+    st.plotly_chart(fig)
