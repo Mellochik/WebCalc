@@ -156,7 +156,7 @@ if data:
     st.text(f"Количество элементов {len(selection.numbers)}\n"
             f"Мининимальное значение x_min = {selection.x_min}\n"
             f"Максимальное значение x_max = {selection.x_max}\n"
-            f"Размах R={selection.R}\n"
+            f"Размах R = {selection.R}\n"
             f"Количество интервалов k = {selection.k}\n"
             f"Шаг интервала m = {selection.m}\n"
             f"Начало интервала x_start = {selection.x_start}\n"
@@ -172,7 +172,14 @@ if data:
             f"Асимметрия А = {selection.A}\n"
             f"Эксцесс E = {selection.E}")
 
-    fig = go.Figure()
-    fig.add_trace(go.Bar(x=selection.table['x_middle'], y=selection.table['n_i'], name="Гистрограмма"))
-    fig.add_trace(go.Scatter(x=selection.table['x_middle'], y=selection.table['n_i'], name="Полигон"))
-    st.plotly_chart(fig)
+    fig1 = go.Figure()
+    fig1.add_trace(go.Bar(x=selection.table['x_middle'],
+                          y=[value / selection.m for value in selection.table['n_i']], name="Гистрограмма"))
+    fig1.add_trace(go.Scatter(x=selection.table['x_middle'],
+                              y=[value / selection.m for value in selection.table['n_i']], name="Полигон"))
+    st.plotly_chart(fig1, config={'staticPlot': True})
+
+    fig2 = go.Figure()
+    fig2.add_trace(go.Scatter(x=[selection.table['x_i'][0][0], *[value[1] for value in selection.table['x_i']]],
+                              y=[0, *selection.table['n*_i']], name="Аккумулята"))
+    st.plotly_chart(fig2, config={'staticPlot': True})
