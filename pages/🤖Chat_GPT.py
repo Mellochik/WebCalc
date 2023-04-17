@@ -29,7 +29,7 @@ if 'past' not in st.session_state:
 
 api_key = st.sidebar.text_input("Api Key")
 if api_key:
-    openai.api_key(api_key)
+    openai.api_key = api_key
 
 user_input = st.text_input("You:", key='input')
 
