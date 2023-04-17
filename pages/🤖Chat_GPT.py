@@ -27,7 +27,7 @@ if 'generated' not in st.session_state:
 if 'past' not in st.session_state:
     st.session_state['past'] = []
 
-api_key = st.sidebar.text_input()
+api_key = st.sidebar.text_input("Api Key")
 if api_key:
     openai.api_key(api_key)
 
